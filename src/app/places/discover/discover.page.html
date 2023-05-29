@@ -23,7 +23,7 @@
     </ion-row>
   </ion-grid>
 
-  <ion-grid *ngIf="releventPlaces.length > 0">
+  <ion-grid *ngIf="releventPlaces.length > 0" [routerLink]="['/', 'places', 'tabs', 'discover', releventPlaces[0].id]">
     <ion-row>
       <ion-col size="12" size-sm="8" offset-sm="2" class="ion-text-center">
         <ion-card>
@@ -36,7 +36,7 @@
             <p>{{ releventPlaces[0].description }}</p>
           </ion-card-content>
           <div>
-            <ion-button fill="clear" color="primary" [routerLink]="['/', 'places', 'tabs', 'discover', releventPlaces[0].id]">
+            <ion-button fill="clear" color="primary">
               More
             </ion-button>
           </div>
@@ -47,7 +47,7 @@
     <ion-row>
       <ion-col size="12" size-sm="8" offset-sm="2" class="ion-text-center">
         <ng-container *ngFor="let place of loadPlace">
-          <ion-item [routerLink]="['/', 'places', 'tabs', 'discover', place.id]" detail>
+          <ion-item detail>
             <ion-thumbnail slot="start">
               <ion-img [src]="place.image"></ion-img>
             </ion-thumbnail>

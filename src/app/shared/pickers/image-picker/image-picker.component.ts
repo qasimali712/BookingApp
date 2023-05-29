@@ -27,18 +27,77 @@ platformBrowserDynamic()
   styleUrls: ['./image-picker.component.scss'],
 })
 export class ImagePickerComponent implements OnInit {
+  selectedImage: string;
 
-  selectedImage!: string;
-  constructor(private ngZone: NgZone) { }
+  constructor(private ngZone: NgZone) {
+    this.selectedImage = '';
+  }
 
-  ngOnInit() { }
+  ngOnInit() {}
 
   async onPickImage() {
+    const imageSource = await this.presentImageSourceActionSheet();
+    if (imageSource === 'camera') {
+      this.captureFromCamera();
+    } else if (imageSource === 'gallery') {
+      this.pickFromGallery();
+    }
+  }
+
+  async presentImageSourceActionSheet(): Promise<string> {
+    return new Promise<string>((resolve) => {
+      const buttons = [
+        {
+          text: 'Camera',
+          icon: 'camera',
+          handler: () => {
+            resolve('camera');
+          },
+        },
+        {
+          text: 'Photo Gallery',
+          icon: 'image',
+          handler: () => {
+            resolve('gallery');
+          },
+        },
+        {
+          text: 'Cancel',
+          icon: 'close',
+          role: 'cancel',
+          handler: () => {
+            resolve('');
+          },
+        },
+      ];
+
+      // Show the action sheet
+      const actionSheet = document.createElement('ion-action-sheet');
+      actionSheet.buttons = buttons;
+      document.body.appendChild(actionSheet);
+      actionSheet.present();
+    });
+  }
+
+  async captureFromCamera() {
     const image = await Camera.getPhoto({
       quality: 90,
       allowEditing: false,
       resultType: CameraResultType.Base64,
       source: CameraSource.Camera,
+    });
+
+    this.ngZone.run(() => {
+      this.selectedImage = `data:image/jpeg;base64,${image.base64String}`;
+    });
+  }
+
+  async pickFromGallery() {
+    const image = await Camera.getPhoto({
+      quality: 90,
+      allowEditing: false,
+      resultType: CameraResultType.Base64,
+      source: CameraSource.Photos,
     });
 
     this.ngZone.run(() => {

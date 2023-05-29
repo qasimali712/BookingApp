@@ -55,10 +55,12 @@
           <ion-label position="stacked">
             From
           </ion-label>
-          <ion-datetime presentation="date" [min]=""
-          [max]=""
-          ngModel name="date-from" required displayFormat="MMM DD YYYY"
-          ></ion-datetime>
+          <ion-datetime-button datetime="datetimeFrom"></ion-datetime-button>
+          <ion-modal [keepContentsMounted]="true">
+            <ng-template>
+              <ion-datetime id="datetimeFrom" required displayFormat="MMM DD YYYY"></ion-datetime>
+            </ng-template>
+          </ion-modal>
         </ion-item>
       </ion-col>
       <ion-col sizeSm="3">
@@ -66,10 +68,12 @@
           <ion-label position="stacked">
             To
           </ion-label>
-          <ion-datetime presentation="date" [min]=""
-          [max]=""
-          ngModel name="date-to" required displayFormat="MMM DD YYYY"
-          ></ion-datetime>
+          <ion-datetime-button datetime="datetimeFrom"></ion-datetime-button>
+          <ion-modal [keepContentsMounted]="true">
+            <ng-template>
+              <ion-datetime id="datetimeFrom" required displayFormat="MMM DD YYYY"></ion-datetime>
+            </ng-template>
+          </ion-modal>
         </ion-item>
       </ion-col>
     </ion-row>

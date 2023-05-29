@@ -31,22 +31,25 @@ export class PlaceDetailPage implements OnInit {
 
     this.actionCtrl.create({
       header: 'Choose an Action',
-      cssClass: 'my-custom-class',
+     // cssClass: 'my-custom-class',
       buttons: [
         {
           text: 'Select Date',
+          icon: 'calendar',
+            handler: () => {
+              this.openBook('select');
+            },
+          },
+          {
+            text: 'Random Date',
+            icon: 'shuffle',
           handler: () => {
-            this.opneBook('select')
-          }
-        },
-        {
-          text: 'Random Date',
-          handler: () => {
-            this.opneBook('random')
+            this.openBook('random')
           }
         },
         {
           text: 'Cancel',
+          icon: 'close',
           role: 'cancel',
           data: {
             action: 'cancel',
@@ -61,7 +64,7 @@ export class PlaceDetailPage implements OnInit {
     // this.router.navigateByUrl('/places/tabs/discover');
     //  this.navCrtl.navigateBack('/places/tabs/discover');
   }
-  opneBook(mode: 'select' | 'random') {
+  openBook(mode: 'select' | 'random') {
     console.log(mode);
     this.modalCtrl.create({
       component: CreateBookingComponent,

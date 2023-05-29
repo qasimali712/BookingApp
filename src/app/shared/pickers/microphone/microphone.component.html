@@ -5,7 +5,7 @@
         <ion-label position="floating">
           Description
         </ion-label>
-        <ion-textarea rows="3" formControlName="description" maxlength="180" required>{{ recognizedText }}</ion-textarea>
+        <ion-textarea rows="3" formControlName="description" maxlength="180" required [(ngModel)]="recognizedText"></ion-textarea>
         <ion-buttons slot="end">
           <button (click)="startRecognition()" *ngIf="!recording">
             <ion-icon name="mic-outline" size="large"></ion-icon>

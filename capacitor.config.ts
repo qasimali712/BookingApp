@@ -6,6 +6,11 @@ const config: CapacitorConfig = {
   webDir: 'www',
   server: {
     androidScheme: 'https'
+  },
+  plugins: {
+    SpeechRecognition: {
+      androidRecognitionService: 'com.getcapacitor.community.speechrecognition.SpeechRecognitionService'
+    }
   }
 };
 
