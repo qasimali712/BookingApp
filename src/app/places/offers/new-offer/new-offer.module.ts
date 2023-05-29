@@ -1,0 +1,19 @@
+import { NgModule } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { ReactiveFormsModule } from '@angular/forms';
+import { IonicModule } from '@ionic/angular';
+import { NewOfferPageRoutingModule } from './new-offer-routing.module';
+import { NewOfferPage } from './new-offer.page';
+import { ImagePickerComponent } from 'src/app/shared/pickers/image-picker/image-picker.component';
+import { MicrophoneComponent } from 'src/app/shared/pickers/microphone/microphone.component';
+
+@NgModule({
+  imports: [
+    CommonModule,
+    ReactiveFormsModule,
+    IonicModule,
+    NewOfferPageRoutingModule
+  ],
+  declarations: [NewOfferPage, ImagePickerComponent, MicrophoneComponent]
+})
+export class NewOfferPageModule { }

@@ -1,0 +1,58 @@
+<ion-header>
+  <ion-toolbar color="primary">
+    <ion-title> Weolcom to Login </ion-title>
+  </ion-toolbar>
+</ion-header>
+<ion-content class="ion-padding">
+  <ion-card>
+    <ion-card-header>
+      <ion-card-title>{{isLogin ? 'LogIn' : 'SingUp'}}</ion-card-title>
+    </ion-card-header>
+    <ion-card-content>
+      <form #f="ngForm" (ngSubmit)="noSubmit(f)">
+        <ion-grid>
+          <ion-row>
+            <ion-col sizeSm="6" offsetSm="3">
+              <ion-item fill="solid">
+                <ion-label position="floating">Email</ion-label>
+                <ion-input type="email" placeholder="Enter Email" id="email" ngModel name="email" required email
+                  #emailCtrl="ngModel"></ion-input>
+              </ion-item>
+              <ion-item *ngIf="!emailCtrl.valid && emailCtrl.touched" lines="none">
+                <ion-label>
+                  Enter valid Email
+                </ion-label>
+              </ion-item>
+              <ion-item fill="solid">
+                <ion-label position="floating">Password</ion-label>
+                <ion-input type="Password" id="password" placeholder="Enter Password" ngModel name="password" required
+                  minlength="6" #passCtrl="ngModel"></ion-input>
+              </ion-item>
+              <ion-item *ngIf="!passCtrl.valid && passCtrl.touched" lines="none">
+                <ion-label>
+                  Enter valid Password
+                </ion-label>
+              </ion-item>
+            </ion-col>
+          </ion-row>
+        </ion-grid>
+        <ion-grid>
+
+          <ion-row>
+            <ion-col sizeSm="6" offsetMd="3">
+              <div class="ion-text-center">
+                <ion-spinner *ngIf="isload" color="warning">
+                </ion-spinner>
+              </div>
+              <ion-button *ngIf="!isload" class="ion-margin-vertical" (click)="onLogin()"
+                (click)="presentToast('bottom')" color="warning" [disabled]="!f.valid" expand="block"
+                type="submit">LogIn</ion-button>
+              <ion-button color="primary" expand="block" type="button" (click)="onSingup()">For {{isLogin ? 'SingUp' :
+                'LogIn'}}</ion-button>
+            </ion-col>
+          </ion-row>
+        </ion-grid>
+      </form>
+    </ion-card-content>
+  </ion-card>
+</ion-content>

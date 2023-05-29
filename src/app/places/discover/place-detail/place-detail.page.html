@@ -1,0 +1,19 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons  slot="start">
+      <ion-back-button defaultHref="/places/tabs/discover" ></ion-back-button>
+    </ion-buttons>
+    <ion-title >{{place[0].title}}</ion-title>
+  </ion-toolbar>
+</ion-header>
+<ion-content>
+  <ion-grid class="ion-no-padding">
+    <ion-row>
+      <ion-col class="ion-no-padding" sizeSm="6" offsetSm="3" class="ion-text-center">
+        <ion-img [src]="place[0].image"></ion-img>
+        <p>{{place[0].description}}</p>
+        <ion-button color="primary" class="ion-margin" (click)="onBook()">Book</ion-button>
+      </ion-col>
+    </ion-row>
+  </ion-grid>
+</ion-content>
