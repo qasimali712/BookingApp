@@ -44,7 +44,7 @@ export class NewOfferPage implements OnInit {
   }
 
   createOffer() {
-    if (!this.form.valid) {
+    if (this.form.valid) {
       return;
     }
 
