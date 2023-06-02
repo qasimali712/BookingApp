@@ -36,5 +36,19 @@ export class OfferBookingPage implements OnInit {
       }
     });
   }
-
+  deleteOffer() {
+    if (this.place) {
+      this.placeSer.deletePlace(this.place.id).subscribe(
+        () => {
+          // Success: Place deleted from Firebase
+          console.log('Place deleted from Firebase');
+          this.navCtrl.navigateBack('/places/tabs/offers');
+        },
+        (error) => {
+          // Error: Handle the error appropriately
+          console.log('Error deleting place from Firebase', error);
+        }
+      );
+    }
+  }
 }

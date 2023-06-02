@@ -39,9 +39,11 @@ export class OffersPage implements OnInit, OnDestroy {
 
   ionViewWillEnter() {
     this.fetchData();
-    this.placesSubscription = this.placeService.fetchPlaces().subscribe(res => {
-      console.log(res);
-    });
+    this.placesSubscription = this.placeService
+      .fetchPlaces()
+      .subscribe((res) => {
+        console.log(res);
+      });
   }
 
   doRefresh(event: any) {
@@ -50,13 +52,13 @@ export class OffersPage implements OnInit, OnDestroy {
       this.placesSubscription.unsubscribe(); // Cancel the previous subscription
     }
 
-    this.placeService.fetchPlaces().subscribe(res => {
+    this.placeService.fetchPlaces().subscribe((res) => {
       console.log(res);
       this.offers = res;
       event.target.complete();
       // Generate new image URLs for each place
       for (const place of this.offers) {
-        this.placeService.generateRandomImage().subscribe(imageUrl => {
+        this.placeService.generateRandomImage().subscribe((imageUrl) => {
           place.image = imageUrl;
         });
       }
