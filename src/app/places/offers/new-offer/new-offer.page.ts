@@ -68,11 +68,4 @@ export class NewOfferPage implements OnInit {
     this.fromDatetimeModal.dismiss();
     this.toDatetimeModal.dismiss();
   }
-
-  // closeDatetimeModal(modal: IonModal) {
-  //   modal.dismiss();
-  // }
-  // getCurrentDate(): any {
-  //   return new Date().toISOString();
-  // }
 }

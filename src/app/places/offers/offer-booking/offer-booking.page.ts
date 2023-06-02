@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { NavController } from '@ionic/angular';
+import { AlertController, NavController } from '@ionic/angular';
 import { Place } from '../../place.model';
 import { PlacesService } from '../../places.service';
 
@@ -15,7 +15,8 @@ export class OfferBookingPage implements OnInit {
   constructor(
     private route: ActivatedRoute,
     private navCtrl: NavController,
-    private placeSer: PlacesService
+    private placeSer: PlacesService,
+    private alertController: AlertController
   ) {}
 
   ngOnInit() {
@@ -36,19 +37,39 @@ export class OfferBookingPage implements OnInit {
       }
     });
   }
-  deleteOffer() {
+  async deleteOffer() {
     if (this.place) {
-      this.placeSer.deletePlace(this.place.id).subscribe(
-        () => {
-          // Success: Place deleted from Firebase
-          console.log('Place deleted from Firebase');
-          this.navCtrl.navigateBack('/places/tabs/offers');
-        },
-        (error) => {
-          // Error: Handle the error appropriately
-          console.log('Error deleting place from Firebase', error);
-        }
-      );
+      const alert = await this.alertController.create({
+        header: 'Confirm Delete',
+        message: 'Are you sure you want to delete this item?',
+        buttons: [
+          {
+            text: 'Cancel',
+            role: 'cancel'
+          },
+          {
+            text: 'Delete',
+            handler: () => {
+              if (this.place) { // Add an additional check here
+                this.placeSer.deletePlace(this.place.id).subscribe(
+                  () => {
+                    // Success: Place deleted from Firebase
+                    console.log('Place deleted from Firebase');
+                    this.navCtrl.navigateBack('/places/tabs/offers');
+                  },
+                  (error) => {
+                    // Error: Handle the error appropriately
+                    console.log('Error deleting place from Firebase', error);
+                  }
+                );
+              }
+            }
+          }
+        ]
+      });
+
+      await alert.present();
     }
   }
+
 }
