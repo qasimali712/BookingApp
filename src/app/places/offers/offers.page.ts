@@ -12,6 +12,7 @@ import { Subscription } from 'rxjs';
 })
 export class OffersPage implements OnInit, OnDestroy {
   offers: Place[] = [];
+  isLoading: boolean = true;
   private placesSubscription: Subscription | null = null;
 
   constructor(private placeService: PlacesService, private router: Router) {}
@@ -27,9 +28,11 @@ export class OffersPage implements OnInit, OnDestroy {
     this.placesSubscription = this.placeService.fetchPlaces().subscribe(
       (places) => {
         this.offers = places;
+        this.isLoading = false;
       },
       (error) => {
         console.log(error);
+        this.isLoading = false;
       }
     );
   }
