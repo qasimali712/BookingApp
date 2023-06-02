@@ -16,6 +16,7 @@ export class DiscoverPage implements OnInit, OnDestroy {
   releventPlaces!: Place[];
   private placeSub: Subscription | null = null;
   selectedSegment: string = 'all';
+  isLoading: boolean = true;
 
   constructor(private placeService: PlacesService, private authSer: AuthService) { }
 
@@ -24,6 +25,9 @@ export class DiscoverPage implements OnInit, OnDestroy {
     this.load = this.placeService.places;
     this.releventPlaces = this.load;
     this.loadPlace = this.releventPlaces.slice(1);
+    this.placeService.placeUpdated.subscribe(() => {
+      this.fetchPlaces();
+    });
   }
 
   fetchPlaces() {
@@ -32,34 +36,37 @@ export class DiscoverPage implements OnInit, OnDestroy {
         this.loadPlace = places;
         this.releventPlaces = this.loadPlace;
         this.loadPlace = this.releventPlaces.slice(1);
+        this.isLoading = false; // Set isLoading to false once data is fetched
       },
       (error) => {
         console.log(error);
+        this.isLoading = false; // Set isLoading to false in case of error
       }
     );
   }
 
   ionViewWillEnter() {
-    this.fetchPlaces();
-    this.placeSub = this.placeService.fetchPlaces().subscribe(res => {
-      console.log(res);
-    });
+    if (this.selectedSegment !== 'bookable') {
+      this.fetchPlaces();
+    }
   }
 
   doRefresh(event: any) {
     console.log('doRefresh called');
+    if (this.placeSub) {
+      this.placeSub.unsubscribe(); // Cancel the previous subscription
+    }
+
     this.placeService.fetchPlaces().subscribe(res => {
       console.log(res);
       this.load = res;
-
+      event.target.complete();
       // Generate new image URLs for each place
       for (const place of this.load) {
         this.placeService.generateRandomImage().subscribe(imageUrl => {
           place.image = imageUrl;
         });
       }
-
-      event.target.complete();
     });
   }
 
