@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import {
   ActionSheetController,
   LoadingController,
@@ -16,10 +16,11 @@ import { BookingService } from '../../../../app/bookings/booking.service';
   styleUrls: ['./place-detail.page.scss'],
 })
 export class PlaceDetailPage implements OnInit {
-  place!: Place[];
+  place: Place | undefined;
   constructor(
     private router: Router,
-    private navCrtl: NavController,
+    private route: ActivatedRoute,
+    private navCtrl: NavController,
     private placeService: PlacesService,
     private modalCtrl: ModalController,
     private loadingCtrl: LoadingController,
@@ -27,8 +28,22 @@ export class PlaceDetailPage implements OnInit {
     private bookingSer: BookingService
   ) {}
   ngOnInit() {
-    this.place = this.placeService.places;
-    console.log(this.place);
+    this.route.paramMap.subscribe((paramMap) => {
+      if (paramMap.has('placeId')) {
+        const placeId = paramMap.get('placeId') as string;
+        this.place = this.placeService.getPlace(placeId);
+
+        if (!this.place) {
+          // Place not found, handle error or redirect
+          // For example, redirect to the Discover page
+          this.navCtrl.navigateBack('/places/tabs/discover');
+        }
+      } else {
+        // PlaceId parameter not found, handle error or redirect
+        // For example, redirect to the Discover page
+        this.navCtrl.navigateBack('/places/tabs/discover');
+      }
+    });
   }
 
   onBook() {

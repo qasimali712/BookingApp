@@ -10,21 +10,31 @@ import { PlacesService } from '../../places.service';
   styleUrls: ['./offer-booking.page.scss'],
 })
 export class OfferBookingPage implements OnInit {
+  place: Place | undefined;
 
-  place!: Place;
-  constructor(private route: ActivatedRoute, private navCtrl: NavController, private placeSer: PlacesService) { }
+  constructor(
+    private route: ActivatedRoute,
+    private navCtrl: NavController,
+    private placeSer: PlacesService
+  ) {}
 
   ngOnInit() {
-    this.route.paramMap.subscribe(paramMap => {
-      if (!paramMap.has('placeId')) {
-        this.navCtrl.navigateBack('/places/tabs/offers');
-        return;
-      }
-      const placeId = paramMap.get('placeId') as string;
-      this.place = this.placeSer.getPlace(placeId) as Place;
-      console.log(placeId);
-       // this.place = this.placeSer.getPlace(paramMap.get('placeId'));
-    });
+    this.route.paramMap.subscribe((paramMap) => {
+      if (paramMap.has('placeId')) {
+        const placeId = paramMap.get('placeId') as string;
+        this.place = this.placeSer.getPlace(placeId);
 
+        if (!this.place) {
+          // Place not found, handle error or redirect
+          // For example, redirect to the Offers page
+          this.navCtrl.navigateBack('/places/tabs/offers');
+        }
+      } else {
+        // PlaceId parameter not found, handle error or redirect
+        // For example, redirect to the Offers page
+        this.navCtrl.navigateBack('/places/tabs/offers');
+      }
+    });
   }
+
 }

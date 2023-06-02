@@ -51,9 +51,18 @@ export class DiscoverPage implements OnInit, OnDestroy {
     this.placeService.fetchPlaces().subscribe(res => {
       console.log(res);
       this.load = res;
+
+      // Generate new image URLs for each place
+      for (const place of this.load) {
+        this.placeService.generateRandomImage().subscribe(imageUrl => {
+          place.image = imageUrl;
+        });
+      }
+
       event.target.complete();
     });
   }
+
 
   filterUpdate(event: any) {
     if (event.detail.value === 'all') {

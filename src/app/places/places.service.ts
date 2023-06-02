@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { catchError, map } from 'rxjs/operators';
-import { Observable, throwError } from 'rxjs';
+import { Observable, throwError, Subject } from 'rxjs';
 import { Place } from './place.model';
 import { AuthService } from '../auth/auth.service';
 import { HttpClient } from '@angular/common/http';
@@ -23,40 +23,8 @@ interface PlaceData {
 export class PlacesService {
   private readonly PLACEHOLDER_IMAGE_URL = 'https://picsum.photos/200';
   private _places: Place[] = [];
-  // public _places: Place[] = [
-  //   new Place(
-  //     'p1',
-  //     'Capital of Pakistan',
-  //     'Islām-ābād) is the capital city of Pakistan. It is the countrys ninth-most populous city, with a population of over 12 million people, and is federally administered by the Pakistani government as part of the Islamabad Capital Territory.',
-  //     'https://upload.wikimedia.org/wikipedia/commons/thumb/e/eb/Faisal_Mosque%2C_Islamabad_III.jpg/800px-Faisal_Mosque%2C_Islamabad_III.jpg',
-  //     800,
-  //     new Date('2023-01-01'),
-  //     new Date('2023-12-31'),
-  //     'abc'
-  //   ),
-  //   new Place(
-  //     'p2',
-  //     'City in Pakistan',
-  //     'Multan is one of the oldest continuously inhabited cities in Asia, with a history stretching deep into antiquity. The ancient city was the site of the renowned Multan Sun Temple, and was besieged by Alexander the Great during the Mallian Campaign.',
-  //     'https://upload.wikimedia.org/wikipedia/commons/thumb/f/f4/Tomb_of_Shah_Rukn-e-Alam_Multan.jpg/800px-Tomb_of_Shah_Rukn-e-Alam_Multan.jpg',
-  //     800,
-  //     new Date('2023-01-01'),
-  //     new Date('2023-12-31'),
-  //     'abc'
-  //   ),
-  //   // new Place(
-  //   //   'p3',
-  //   //   'Heart of Pakistan',
-  //   //   'Lahores origins reach into antiquity. The city has been inhabited for at least two millennia, although it rose to prominence in the 10th century.',
-  //   //   'https://upload.wikimedia.org/wikipedia/commons/thumb/f/fa/Data_Durbar_as_more_then_one_decade_before_by_Usman_Ghani.jpg/1024px-Data_Durbar_as_more_then_one_decade_before_by_Usman_Ghani.jpg',
-  //   //   800,
-  //   //   new Date('2023-01-01'),
-  //   //   new Date('2023-12-31'),
-  //   //   'cdx'
-  //   // ),
+  placeUpdated = new Subject<Place>(); // Add placeUpdated subject
 
-
-  // ];
   get places() {
     return [...this._places];
   }
@@ -68,21 +36,21 @@ export class PlacesService {
       .get<PlaceData>('https://newone-de6b9-default-rtdb.asia-southeast1.firebasedatabase.app/f-places.json')
       .pipe(
         map(res => {
-          const places = [];
+          const places: Place[] = [];
           for (const key in res) {
             if (res.hasOwnProperty(key)) {
-              places.push(
-                new Place(
-                  key,
-                  res[key].title,
-                  res[key].description,
-                  res[key].image,
-                  res[key].price,
-                  new Date(res[key].dateFrom),
-                  new Date(res[key].dateTo),
-                  res[key].userId
-                )
+              const placeData = res[key];
+              const place = new Place(
+                key,
+                placeData.title,
+                placeData.description,
+                placeData.image,
+                placeData.price,
+                new Date(placeData.dateFrom),
+                new Date(placeData.dateTo),
+                placeData.userId
               );
+              places.push(place);
             }
           }
           this._places = places;
@@ -120,8 +88,45 @@ export class PlacesService {
     });
   }
 
+  updatePlace(place: Place) {
+    // Prepare the updated data
+    const updatedPlaceData = {
+      title: place.title,
+      description: place.description,
+      image: place.image,
+      price: place.price,
+      dateFrom: place.dateFrom.toISOString(),
+      dateTo: place.dateTo.toISOString(),
+      userId: place.userId
+    };
+
+    // Send an HTTP request to update the data in Firebase
+    this.http
+      .put(
+        `https://newone-de6b9-default-rtdb.asia-southeast1.firebasedatabase.app/f-places/${place.id}.json`,
+        updatedPlaceData
+      )
+      .subscribe(
+        () => {
+          // Update the place in the local array
+          const updatedPlaces = [...this._places];
+          const oldPlaceIndex = updatedPlaces.findIndex(p => p.id === place.id);
+          updatedPlaces[oldPlaceIndex] = place;
+          this._places = updatedPlaces;
+
+          // Emit the event to notify subscribers that the place has been updated
+          this.placeUpdated.next(place);
+        },
+        error => {
+          console.log(error);
+        }
+      );
+  }
+
+
   generateRandomImage(): Observable<string> {
     const randomNumber = Math.floor(Math.random() * 1000);
+    const timestamp = Date.now();
     const imageUrl = `https://picsum.photos/200?random=${randomNumber}`;
 
     return new Observable<string>(observer => {

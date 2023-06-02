@@ -18,6 +18,9 @@ export class OffersPage implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.fetchData();
+    this.placeService.placeUpdated.subscribe(() => {
+      this.fetchData();
+    });
   }
 
   fetchData() {

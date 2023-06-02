@@ -3,7 +3,7 @@
     <ion-buttons slot="start">
       <ion-back-button defaultHref="/places/tabs/offers" ></ion-back-button>
     </ion-buttons>
-    <ion-title>{{place.title}}</ion-title>
+    <ion-title>{{place?.title}}</ion-title>
   </ion-toolbar>
 </ion-header>
 
@@ -11,5 +11,9 @@
   <!-- <ion-button class="ion-margin" color="primary"
   [routerLink]="['/','places','tabs','offers','edit',place.id]">Edit
   </ion-button> -->
-  <h2>{{place.description}}</h2>
+  <ion-row>
+    <ion-col size="12" sizeSm="6" offsetSm="3" class="ion-no-padding" class="ion-text-center">
+      <ion-img [src]="place?.image"></ion-img>
+    </ion-col>
+  </ion-row>
 </ion-content>
