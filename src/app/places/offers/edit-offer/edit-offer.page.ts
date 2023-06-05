@@ -49,13 +49,26 @@ export class EditOfferPage implements OnInit {
       return;
     }
     console.log('Form:', this.form);
-   // console.log('Updated Place:', this.place);
-    // Update the place object with the new form values
-    this.place.title = this.form.value.title;
-    this.place.description = this.form.value.description;
-   // console.log('After Update:', this.place);
 
-    // Navigate back to the offers page
-    this.navCtrl.navigateBack('/places/tabs/offers');
+    // Create a new object to hold the updated place data
+    const updatedPlace: Place = {
+      ...this.place, // Copy existing place data
+      title: this.form.value.title,
+      description: this.form.value.description
+
+    };
+
+    // Call the updatePlace() function to update the place
+    this.placeSrc.updatePlace(updatedPlace).subscribe(
+      () => {
+        console.log('Place updated successfully');
+        // Navigate back to the offers page
+        this.navCtrl.navigateBack('/places/tabs/offers');
+      },
+      error => {
+        console.log('Error updating place:', error);
+      }
+    );
   }
+
 }
