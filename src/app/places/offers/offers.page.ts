@@ -1,9 +1,10 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Router } from '@angular/router';
-import { IonItemSliding } from '@ionic/angular';
+import { IonItemSliding, PopoverController } from '@ionic/angular';
 import { Place } from '../place.model';
 import { PlacesService } from '../places.service';
 import { Subscription } from 'rxjs';
+import { PopOverComponent } from './pop-over/pop-over.component';
 
 @Component({
   selector: 'app-offers',
@@ -15,7 +16,9 @@ export class OffersPage implements OnInit, OnDestroy {
   isLoading: boolean = true;
   private placesSubscription: Subscription | null = null;
 
-  constructor(private placeService: PlacesService, private router: Router) {}
+  constructor(private placeService: PlacesService,
+     private router: Router,
+     private popoverController: PopoverController) {}
 
   ngOnInit() {
     this.fetchData();
@@ -57,11 +60,11 @@ export class OffersPage implements OnInit, OnDestroy {
       this.offers = res;
       event.target.complete();
       // Generate new image URLs for each place
-      for (const place of this.offers) {
-        this.placeService.generateRandomImage().subscribe((imageUrl) => {
-          place.image = imageUrl;
-        });
-      }
+      // for (const place of this.offers) {
+      //   this.placeService.generateRandomImage().subscribe((imageUrl) => {
+      //     place.image = imageUrl;
+      //   });
+      // }
     });
   }
 
@@ -76,4 +79,13 @@ export class OffersPage implements OnInit, OnDestroy {
       this.placesSubscription.unsubscribe();
     }
   }
+  async presentPopover(ev: any) {
+    const popover = await this.popoverController.create({
+      component: PopOverComponent,
+      event: ev,
+      translucent: true,
+    });
+    return await popover.present();
+  }
+
 }

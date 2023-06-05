@@ -42,6 +42,8 @@ export class OfferBookingPage implements OnInit {
       const alert = await this.alertController.create({
         header: 'Confirm Delete',
         message: 'Are you sure you want to delete this item?',
+        cssClass: 'delete-alert', // Add a CSS class for styling
+
         buttons: [
           {
             text: 'Cancel',
@@ -49,6 +51,7 @@ export class OfferBookingPage implements OnInit {
           },
           {
             text: 'Delete',
+            cssClass: 'delete-button', // Add a CSS class for styling
             handler: () => {
               if (this.place) { // Add an additional check here
                 this.placeSer.deletePlace(this.place.id).subscribe(
@@ -69,7 +72,16 @@ export class OfferBookingPage implements OnInit {
       });
 
       await alert.present();
+
+      // Set a timeout to select the delete button after the alert is presented
+      setTimeout(() => {
+        const deleteButton = document.querySelector('.delete-button') as HTMLElement;
+        if (deleteButton) {
+          deleteButton.focus();
+        }
+      }, 0);
     }
   }
+
 
 }

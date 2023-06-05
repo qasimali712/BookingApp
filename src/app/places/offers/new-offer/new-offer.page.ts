@@ -52,8 +52,8 @@ export class NewOfferPage implements OnInit {
       this.form.value.title,
       this.form.value.description,
       +this.form.value.price,
-      new Date(this.form.value.dateFrom),
-      new Date(this.form.value.dateTo)
+      this.form.value.dateFrom,
+      this.form.value.dateTo
     );
 
     console.log(this.form);

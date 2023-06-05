@@ -1,0 +1,23 @@
+<ion-content>
+  <!-- Fixed Header -->
+  <ion-list-header>
+    <ion-label>List Sorting</ion-label>
+  </ion-list-header>
+
+  <!-- List Items -->
+  <ion-list>
+    <ion-item>
+      <ion-label>By Name</ion-label>
+      <ion-checkbox (ionChange)="onCheckboxChange($event, 'option1')" class="square-checkbox"></ion-checkbox>
+    </ion-item>
+    <ion-item>
+      <ion-label>By Date</ion-label>
+      <ion-checkbox (ionChange)="onCheckboxChange($event, 'option2')" class="square-checkbox"></ion-checkbox>
+    </ion-item>
+    <ion-item>
+      <ion-label>By Numbers</ion-label>
+      <ion-checkbox (ionChange)="onCheckboxChange($event, 'option3')" class="square-checkbox"></ion-checkbox>
+    </ion-item>
+  </ion-list>
+  <ion-button expand="block" (click)="onContinue()">Continue</ion-button>
+</ion-content>
