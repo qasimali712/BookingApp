@@ -136,6 +136,7 @@ export class PlacesService {
       )
       .subscribe(
         () => {
+          console.log('Update success');
           // Update the place in the local array
           const updatedPlaces = [...this._places];
           const oldPlaceIndex = updatedPlaces.findIndex(p => p.id === place.id);
@@ -146,6 +147,7 @@ export class PlacesService {
           this.placeUpdated.next(place);
         },
         error => {
+          console.log('Update error:', error);
           console.log(error);
         }
       );

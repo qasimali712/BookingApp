@@ -49,11 +49,11 @@ export class EditOfferPage implements OnInit {
       return;
     }
     console.log('Form:', this.form);
-    console.log('Updated Place:', this.place);
+   // console.log('Updated Place:', this.place);
     // Update the place object with the new form values
     this.place.title = this.form.value.title;
     this.place.description = this.form.value.description;
-    console.log('After Update:', this.place);
+   // console.log('After Update:', this.place);
 
     // Navigate back to the offers page
     this.navCtrl.navigateBack('/places/tabs/offers');

@@ -84,8 +84,18 @@ export class OffersPage implements OnInit, OnDestroy {
       component: PopOverComponent,
       event: ev,
       translucent: true,
+      componentProps: {
+        selectedOptions: [],
+      },
     });
+
+    popover.onDidDismiss().then((result) => {
+      const selectedOptions = result.data as string[];
+      console.log('Selected options:', selectedOptions);
+      // Perform sorting logic based on selectedOptions array
+      // ...
+    });
+
     return await popover.present();
   }
-
 }

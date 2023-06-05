@@ -34,7 +34,7 @@ export class PopOverComponent  implements OnInit {
   }
   onContinue() {
     console.log('Continue button clicked');
-    console.log('Selected options:', this.selectedOptions);
+    //console.log('Selected options:', this.selectedOptions);
     this.popoverController.dismiss(this.selectedOptions);
   }
 }
