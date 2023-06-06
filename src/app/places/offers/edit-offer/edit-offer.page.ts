@@ -40,6 +40,18 @@ export class EditOfferPage implements OnInit {
           updateOn: 'blur',
           validators: [Validators.required, Validators.maxLength(500)],
         }),
+        price: new FormControl(null, {
+          updateOn: 'blur',
+          validators: [Validators.required, Validators.min(1)]
+        }),
+        dateFrom: new FormControl(null, {
+          updateOn: 'blur',
+          validators: [Validators.required]
+        }),
+        dateTo: new FormControl(null, {
+          updateOn: 'blur',
+          validators: [Validators.required]
+        })
       });
     });
   }
@@ -48,14 +60,14 @@ export class EditOfferPage implements OnInit {
     if (!this.form.valid) {
       return;
     }
-    console.log('Form:', this.form);
 
-    // Create a new object to hold the updated place data
     const updatedPlace: Place = {
-      ...this.place, // Copy existing place data
+      ...this.place,
       title: this.form.value.title,
-      description: this.form.value.description
-
+      description: this.form.value.description,
+      price: +this.form.value.price,
+      dateFrom: new Date(this.form.value.dateFrom),
+      dateTo: new Date(this.form.value.dateTo)
     };
 
     // Call the updatePlace() function to update the place

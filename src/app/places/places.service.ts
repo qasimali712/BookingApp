@@ -123,8 +123,8 @@ export class PlacesService {
     description: place.description,
     image: place.image,
     price: place.price,
-    dateFrom: place.dateFrom.toISOString(),
-    dateTo: place.dateTo.toISOString(),
+    dateFrom: place.dateFrom instanceof Date && !isNaN(place.dateFrom.getTime()) ? place.dateFrom.toISOString() : null,
+    dateTo: place.dateTo instanceof Date && !isNaN(place.dateTo.getTime()) ? place.dateTo.toISOString() : null,
     userId: place.userId
   };
 
