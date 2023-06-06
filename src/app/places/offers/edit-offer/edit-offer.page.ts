@@ -38,7 +38,7 @@ export class EditOfferPage implements OnInit {
         }),
         description: new FormControl(this.place.description, {
           updateOn: 'blur',
-          validators: [Validators.required, Validators.maxLength(380)],
+          validators: [Validators.required, Validators.maxLength(500)],
         }),
       });
     });

@@ -15,5 +15,10 @@ export class ItemComponent  implements OnInit {
   Date(){
      return new Date();
   }
+  isValidDate(date: any): boolean {
+    return date instanceof Date && !isNaN(date.getTime());
+  }
+
+
 
 }

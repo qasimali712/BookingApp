@@ -44,16 +44,16 @@ export class NewOfferPage implements OnInit {
   }
 
   createOffer() {
-    if (this.form.valid) {
-      return;
-    }
+  if (this.form.valid) {
+    const dateFrom = new Date(this.form.value.dateFrom);
+    const dateTo = new Date(this.form.value.dateTo);
 
     this.placesService.addPlace(
       this.form.value.title,
       this.form.value.description,
       +this.form.value.price,
-      this.form.value.dateFrom,
-      this.form.value.dateTo
+      dateFrom,
+      dateTo
     );
 
     console.log(this.form);
@@ -61,11 +61,16 @@ export class NewOfferPage implements OnInit {
     this.form.reset();
     this.router.navigate(['/places/tabs/offers']);
   }
-  onDatetimeChange(event: any) {
-    // Do something with the selected date
+}
 
-    // Close the modal containing the calendar
-    this.fromDatetimeModal.dismiss();
-    this.toDatetimeModal.dismiss();
+onDatetimeChange(event: any, type: 'from' | 'to') {
+  const selectedDate = new Date(event.detail.value);
+
+  if (type === 'from') {
+    this.form.patchValue({ dateFrom: selectedDate });
+  } else {
+    this.form.patchValue({ dateTo: selectedDate });
   }
+}
+
 }

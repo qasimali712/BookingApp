@@ -5,7 +5,7 @@
     </ion-buttons>
     <ion-title>New Offer</ion-title>
     <ion-buttons slot="primary">
-      <ion-button (click)="createOffer()" [disabled]="form.valid">
+      <ion-button (click)="createOffer()" [disabled]="!form.valid">
         <ion-icon name="checkmark" slot="icon-only"></ion-icon>
       </ion-button>
     </ion-buttons>
@@ -52,12 +52,7 @@
             <ion-label position="stacked">
               Available From
             </ion-label>
-            <ion-datetime-button (ionChange)="onDatetimeChange($event)" datetime="datetimeFrom"></ion-datetime-button>
-            <ion-modal [keepContentsMounted]="true">
-              <ng-template>
-                <ion-datetime id="datetimeFrom"></ion-datetime>
-              </ng-template>
-            </ion-modal>
+            <ion-datetime formControlName="dateFrom" (ionChange)="onDatetimeChange($event, 'from')"></ion-datetime>
           </ion-item>
         </ion-col>
         <ion-col sizeSm="3">
@@ -65,21 +60,17 @@
             <ion-label position="stacked">
               Available To
             </ion-label>
-            <ion-datetime-button (ionChange)="onDatetimeChange($event)" datetime="datetimeTo"></ion-datetime-button>
-            <ion-modal [keepContentsMounted]="true">
-              <ng-template>
-                <ion-datetime id="datetimeTo"></ion-datetime>
-              </ng-template>
-            </ion-modal>
+            <ion-datetime formControlName="dateTo" (ionChange)="onDatetimeChange($event, 'to')"></ion-datetime>
           </ion-item>
         </ion-col>
       </ion-row>
-      <ion-row>
+
+      <!-- <ion-row>
         <ion-col sizeSm="3" offsetSm="3">
           <app-image-picker></app-image-picker>
         </ion-col>
-      </ion-row>
+      </ion-row> -->
     </ion-grid>
-    <app-microphone></app-microphone>
+    <!-- <app-microphone></app-microphone> -->
   </form>
 </ion-content>
