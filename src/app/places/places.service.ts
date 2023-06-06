@@ -117,41 +117,42 @@ export class PlacesService {
   }
 
   updatePlace(place: Place): Observable<void> {
-  // Prepare the updated data
-  const updatedPlaceData = {
-    title: place.title,
-    description: place.description,
-    image: place.image,
-    price: place.price,
-    dateFrom: place.dateFrom instanceof Date && !isNaN(place.dateFrom.getTime()) ? place.dateFrom.toISOString() : null,
-    dateTo: place.dateTo instanceof Date && !isNaN(place.dateTo.getTime()) ? place.dateTo.toISOString() : null,
-    userId: place.userId
-  };
+    // Prepare the updated data
+    const updatedPlaceData = {
+      title: place.title,
+      description: place.description,
+      image: place.image,
+      price: place.price,
+      dateFrom: place.dateFrom instanceof Date && !isNaN(place.dateFrom.getTime()) ? place.dateFrom.toISOString() : null,
+      dateTo: place.dateTo instanceof Date && !isNaN(place.dateTo.getTime()) ? place.dateTo.toISOString() : null,
+      userId: place.userId
+    };
 
-  // Send an HTTP request to update the data in Firebase
-  return this.http.put<void>(
-    `https://newone-de6b9-default-rtdb.asia-southeast1.firebasedatabase.app/f-places/${place.id}.json`,
-    updatedPlaceData
-  ).pipe(
-    tap(() => {
-      console.log('Update success');
-      // Update the place in the local array
-      const updatedPlaces = [...this._places];
-      const oldPlaceIndex = updatedPlaces.findIndex(p => p.id === place.id);
-      updatedPlaces[oldPlaceIndex] = place;
-      this._places = updatedPlaces;
+    // Send an HTTP request to update the data in Firebase
+    return this.http.put<void>(
+      `https://newone-de6b9-default-rtdb.asia-southeast1.firebasedatabase.app/f-places/${place.id}.json`,
+      updatedPlaceData
+    ).pipe(
+      tap(() => {
+        console.log('Update success');
+        // Update the place in the local array
+        const updatedPlaces = [...this._places];
+        const oldPlaceIndex = updatedPlaces.findIndex(p => p.id === place.id);
+        updatedPlaces[oldPlaceIndex] = { ...updatedPlaces[oldPlaceIndex], ...place };
+        this._places = updatedPlaces;
 
-      // Emit the event to notify subscribers that the place has been updated
-      this.placeUpdated.next(place);
-    }),
-    catchError((error) => {
-      console.log('Update error:', error);
-      console.log(error);
-      // Throw the error again to propagate it
-      throw error;
-    })
-  );
-}
+        // Emit the event to notify subscribers that the place has been updated
+        this.placeUpdated.next(place);
+      }),
+      catchError((error) => {
+        console.log('Update error:', error);
+        console.log(error);
+        // Throw the error again to propagate it
+        throw error;
+      })
+    );
+  }
+
 
 
   generateRandomImage(): Observable<string> {
