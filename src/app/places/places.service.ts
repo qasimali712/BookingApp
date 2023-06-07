@@ -55,6 +55,7 @@ export class PlacesService {
             }
           }
           this._places = places;
+          //this._places = places.sort((a, b) => a.dateFrom.getTime() - b.dateFrom.getTime());
           return places;
         }),
         catchError(errorRes => {
