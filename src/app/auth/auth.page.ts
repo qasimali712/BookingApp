@@ -31,10 +31,6 @@ this.loadingCtrl.create({
     this.router.navigateByUrl('/places/tabs/discover');
   }, 1500);
 })
-
-
-
-
 }
 async presentToast(position: 'top' | 'middle' | 'bottom') {
   const toast = await this.Toast.create({
@@ -45,8 +41,8 @@ async presentToast(position: 'top' | 'middle' | 'bottom') {
 
   await toast.present();
 }
-onSingup(){
-this.isLogin = !this.isLogin;
+onSingup() {
+  this.router.navigateByUrl('/signup');
 }
 noSubmit(form:NgForm){
  if (!form.valid){
