@@ -52,7 +52,11 @@
             <ion-label position="stacked">
               Available From
             </ion-label>
-            <ion-datetime formControlName="dateFrom" (ionChange)="onDatetimeChange($event, 'from')"></ion-datetime>
+            <ion-datetime
+              formControlName="dateFrom"
+              [min]="getCurrentDate()"
+              (ionChange)="onDatetimeChange($event, 'from')"
+            ></ion-datetime>
           </ion-item>
         </ion-col>
         <ion-col sizeSm="3">
@@ -60,7 +64,11 @@
             <ion-label position="stacked">
               Available To
             </ion-label>
-            <ion-datetime formControlName="dateTo" (ionChange)="onDatetimeChange($event, 'to')"></ion-datetime>
+            <ion-datetime
+              formControlName="dateTo"
+              [min]="getCurrentDate()"
+              (ionChange)="onDatetimeChange($event, 'to')"
+            ></ion-datetime>
           </ion-item>
         </ion-col>
       </ion-row>

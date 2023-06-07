@@ -1,17 +1,19 @@
-<ion-item [routerLink]="['/','places','tabs','offers',offer.id]">
+<ion-item [routerLink]="['/', 'places', 'tabs', 'offers', offer.id]">
   <ion-thumbnail slot="start">
     <ion-img [src]="offer.image"></ion-img>
   </ion-thumbnail>
   <ion-label>
-    <h2>{{ offer.title}}</h2>
+    <h2>{{ offer.title }}</h2>
     <div class="detail">
-      <ion-icon name="calendar" color="primary" class="sapce-left"></ion-icon>
-      <ion-text color="tertiary" class="sapce-left" *ngIf="isValidDate(offer.dateFrom)">{{ offer.dateFrom ? (offer.dateFrom | date) : 'N/A' }}</ion-text>
-      <span class="sapce-left">to</span>
-      <ion-icon name="calendar" color="primary" class="sapce-left"></ion-icon>
-      <ion-text color="tertiary" class="sapce-left" *ngIf="isValidDate(offer.dateTo)">{{ offer.dateTo ? (offer.dateTo | date) : 'N/A' }}</ion-text>
-
+      <ion-icon name="calendar" color="primary" class="space-left"  class="space-right"></ion-icon>
+      <ion-text color="tertiary" class="space-left"  class="space-right" *ngIf="isValidDate(offer.dateFrom)">
+        {{ offer.dateFrom ? (offer.dateFrom | date) : 'N/A' }}
+      </ion-text>
+      <span class="space-left"  class="space-right">To</span>
+      <ion-icon name="calendar" color="primary" class="space-left"  class="space-right"></ion-icon>
+      <ion-text color="tertiary" class="space-left"  class="space-right" *ngIf="isValidDate(offer.dateTo)">
+        {{ offer.dateTo ? (offer.dateTo | date) : 'N/A' }}
+      </ion-text>
     </div>
-    <!-- <p>{{ offer.description}}</p> -->
   </ion-label>
 </ion-item>

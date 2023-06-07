@@ -43,13 +43,20 @@
         <ion-col sizeSm="3" offsetSm="3">
           <ion-item>
             <ion-label position="stacked">Available From</ion-label>
-            <ion-datetime formControlName="dateFrom"></ion-datetime>
+            <ion-datetime
+              formControlName="dateFrom"
+              [min]="getCurrentDate()"
+              [max]="form.controls['dateTo'].value"
+            ></ion-datetime>
           </ion-item>
         </ion-col>
         <ion-col sizeSm="3">
           <ion-item>
             <ion-label position="stacked">Available To</ion-label>
-            <ion-datetime formControlName="dateTo"></ion-datetime>
+            <ion-datetime
+              formControlName="dateTo"
+              [min]="form.controls['dateFrom'].value"
+            ></ion-datetime>
           </ion-item>
         </ion-col>
       </ion-row>

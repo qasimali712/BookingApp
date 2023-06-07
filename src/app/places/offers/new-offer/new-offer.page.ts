@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { ChangeDetectorRef, Component, NgZone, OnInit, ViewChild } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { NavController, IonModal } from '@ionic/angular';
@@ -15,7 +15,8 @@ export class NewOfferPage implements OnInit {
   constructor(
     private router: Router,
     private navCtrl: NavController,
-    private placesService: PlacesService
+    private placesService: PlacesService,
+    private ngZone: NgZone
   ) {}
 
   ngOnInit() {
@@ -66,11 +67,22 @@ export class NewOfferPage implements OnInit {
 onDatetimeChange(event: any, type: 'from' | 'to') {
   const selectedDate = new Date(event.detail.value);
 
-  if (type === 'from') {
-    this.form.patchValue({ dateFrom: selectedDate });
-  } else {
-    this.form.patchValue({ dateTo: selectedDate });
-  }
+  this.ngZone.runOutsideAngular(() => {
+    setTimeout(() => {
+      this.ngZone.run(() => {
+        if (type === 'from') {
+          this.form.patchValue({ dateFrom: selectedDate });
+        } else {
+          this.form.patchValue({ dateTo: selectedDate });
+        }
+      });
+    }, 0);
+  });
 }
+getCurrentDate(): string {
+  const currentDate = new Date();
+  return currentDate.toISOString();
+}
+
 
 }

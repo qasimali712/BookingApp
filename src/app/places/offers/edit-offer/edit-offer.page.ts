@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, NgZone, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { NavController } from '@ionic/angular';
@@ -17,7 +17,9 @@ export class EditOfferPage implements OnInit {
   constructor(
     private route: ActivatedRoute,
     private placeSrc: PlacesService,
-    private navCtrl: NavController
+    private navCtrl: NavController,
+    private ngZone: NgZone,
+    private cd: ChangeDetectorRef
   ) {}
 
   ngOnInit() {
@@ -40,19 +42,31 @@ export class EditOfferPage implements OnInit {
           updateOn: 'blur',
           validators: [Validators.required, Validators.maxLength(500)],
         }),
-        price: new FormControl(null, {
+        price: new FormControl(this.place.price, {
           updateOn: 'blur',
           validators: [Validators.required, Validators.min(1)]
         }),
-        dateFrom: new FormControl(null, {
+
+        dateFrom: new FormControl(this.place.dateFrom.toISOString(), {
           updateOn: 'blur',
           validators: [Validators.required]
         }),
-        dateTo: new FormControl(null, {
+        dateTo: new FormControl(this.place.dateTo.toISOString(), {
           updateOn: 'blur',
           validators: [Validators.required]
         })
       });
+
+      // Run the form value updates inside the NgZone
+      setTimeout(() => {
+        this.ngZone.run(() => {
+          this.form.patchValue({
+            dateFrom: this.place.dateFrom.toISOString(),
+            dateTo: this.place.dateTo.toISOString()
+          });
+          this.cd.detectChanges(); // Add this line
+        });
+      }, 0);
     });
   }
 
@@ -81,6 +95,10 @@ export class EditOfferPage implements OnInit {
         console.log('Error updating place:', error);
       }
     );
+  }
+  getCurrentDate(): string {
+    const currentDate = new Date();
+    return currentDate.toISOString();
   }
 
 }
