@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, NgZone } from '@angular/core';
 import { Router } from '@angular/router';
 import { AlertController } from '@ionic/angular';
 import { AuthService } from './auth/auth.service';
@@ -13,7 +13,8 @@ export class AppComponent {
   constructor(
     private authSer:AuthService,
     private router:Router,
-    private alertCtrl : AlertController
+    private alertCtrl : AlertController,
+    private ngZone: NgZone
   ) {}
 
 //   onLogout(){
@@ -25,25 +26,29 @@ isSelected(path: string): boolean {
   return this.router.url === path;
 }
 
-  onLogout() {
-    this.alertCtrl.create({
+onLogout() {
+  this.alertCtrl
+    .create({
       header: 'Are You Sure?',
       message: 'Do you really want to Logout Your Account?',
       buttons: [
         {
-          text: 'Cancle',
-          role: 'cancle'
+          text: 'Cancel',
+          role: 'cancel'
         },
         {
           text: 'Logout',
           handler: () => {
-            this.authSer.onlogout;
-            this.router.navigate(['/auth']);
+            this.ngZone.run(() => {
+              this.authSer.onlogout();
+              this.router.navigate(['/auth']);
+            });
           }
         }
       ]
-    }).then(alertEl => {
+    })
+    .then(alertEl => {
       alertEl.present();
     });
-  }
+}
 }
